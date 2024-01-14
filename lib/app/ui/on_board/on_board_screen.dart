@@ -39,9 +39,9 @@ class OnBoardScreen extends StatelessWidget {
               ),
               const Spacer(),
               CustomButtonWidget(
-                title: "Sign Up",
+                title: "Choose Course",
                 onPressed: () =>
-                    context.pushReplacement(AppRouteName.signUpScreen),
+                    context.pushReplacement(AppRouteName.introScreen),
               ),
               30.h,
             ],
