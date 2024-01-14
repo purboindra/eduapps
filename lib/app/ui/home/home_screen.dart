@@ -3,7 +3,9 @@ import 'package:education_app/app/utils/extension.dart';
 import 'package:education_app/app/utils/text_style.dart';
 import 'package:education_app/app/widgets/custom_textfield_widget.dart';
 import 'package:education_app/domain/bloc/auth_bloc.dart';
+import 'package:education_app/domain/bloc/home_bloc.dart';
 import 'package:education_app/domain/state/auth_state.dart';
+import 'package:education_app/domain/state/home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -62,7 +64,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: 10,
                               color: AppColors.primaryWhiteColor,
                             ),
-                            color: Colors.red,
+                            image: const DecorationImage(
+                              image:
+                                  AssetImage("assets/image/empty_avatar.png"),
+                            ),
                           ),
                         ),
                       ),
@@ -103,50 +108,74 @@ class _HomeScreenState extends State<HomeScreen> {
               style: AppTextStyle.titleTextStyle,
             ),
             10.h,
-            Container(
-              // color: Colors.blue,
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              height: 180,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Card(
-                      surfaceTintColor: AppColors.backgroundColor,
-                      child: Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Container(
-                                width: 115,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                            10.h,
-                            Text(
-                              "Name $index",
-                              style: AppTextStyle.titleTextStyle.copyWith(
-                                fontSize: 16,
-                              ),
-                            ),
-                            const Text(
-                              "Biology",
-                              style: AppTextStyle.commonTextStyle,
-                            ),
-                          ],
-                        ),
-                      ),
+            BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                if (state is LoadingGetTeacherState) {
+                  return const SizedBox(
+                    height: 180,
+                    child: Center(
+                      child: CircularProgressIndicator.adaptive(),
                     ),
                   );
-                },
-              ),
+                } else if (state is SuccessGetTeacherState) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    height: 180,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: state.teachers.length,
+                      itemBuilder: (context, index) {
+                        final teacher = state.teachers[index];
+                        return Container(
+                          width: 140,
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Card(
+                            surfaceTintColor: AppColors.backgroundColor,
+                            child: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: SizedBox(
+                                      width: 115,
+                                      child: teacher.photoUrl != null
+                                          ? Image.network(
+                                              teacher.photoUrl!,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Image.asset(
+                                              "assets/image/default_avatar.jpg",
+                                              fit: BoxFit.cover,
+                                            ),
+                                    ),
+                                  ),
+                                  10.h,
+                                  Text(
+                                    teacher.name!,
+                                    style: AppTextStyle.titleTextStyle.copyWith(
+                                      fontSize: 16,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                  Text(
+                                    teacher.subject!,
+                                    style: AppTextStyle.commonTextStyle,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
+                return const SizedBox();
+              },
             ),
             29.h,
             const Text(
