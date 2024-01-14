@@ -11,6 +11,19 @@ class AuthRepositoryImpl implements AuthRepository {
         .signUp(password: password, email: email, data: {
       "username": username,
     });
+
+    final user = response.user;
+
+    await Supabase.instance.client.from("user").insert({
+      "uid": user?.id,
+      "password": password,
+      "email": email,
+      "user_name": username,
+      "created_at": user?.createdAt,
+      "age": 23,
+      "education_status": "student",
+    });
+
     return response;
   }
 
@@ -26,5 +39,10 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<User?> getCurrentUser() async {
     final user = Supabase.instance.client.auth.currentUser;
     return user;
+  }
+
+  @override
+  Future<void> signOut() async {
+    await Supabase.instance.client.auth.signOut();
   }
 }
