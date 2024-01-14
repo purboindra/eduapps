@@ -6,11 +6,13 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<AuthResponse?> signUp(
       {required String email,
       required String password,
-      required String username}) async {
+      required String username,
+      List<int>? coursesId}) async {
     final response = await Supabase.instance.client.auth
         .signUp(password: password, email: email, data: {
       "username": username,
       "password": password,
+      "courses": coursesId,
     });
 
     return response;
@@ -45,6 +47,7 @@ class AuthRepositoryImpl implements AuthRepository {
       "created_at": user.createdAt,
       "age": 23,
       "education_status": "student",
+      "courses": user.userMetadata!["courses"]
     });
   }
 }

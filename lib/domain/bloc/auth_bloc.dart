@@ -78,7 +78,8 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       final response = await authRepository.signUp(
           email: event.email,
           password: event.password,
-          username: event.username);
+          username: event.username,
+          coursesId: event.coursesId);
       if (response != null) {
         await authRepository.storeUserToDatabase(response.user!);
         emit(SuccessSignUpState(response));

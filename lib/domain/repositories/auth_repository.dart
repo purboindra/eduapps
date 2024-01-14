@@ -4,7 +4,9 @@ abstract class AuthRepository {
   Future<AuthResponse?> signUp(
       {required String email,
       required String password,
-      required String username});
+      required String username,
+      List<int>? coursesId});
+
   Future<AuthResponse?> signIn({
     required String email,
     required String password,
