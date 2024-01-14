@@ -15,7 +15,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+  const SignUpScreen({super.key, this.coursesId});
+
+  final List<int>? coursesId;
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -96,8 +98,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     onPressed: state is LoadingAuthState
                         ? null
                         : () async => context.read<AuthBloc>().add(
-                              SignUpEvent(_emailC.text.trim(),
-                                  _passwordC.text.trim(), _nameC.text),
+                              SignUpEvent(
+                                _emailC.text.trim(),
+                                _passwordC.text.trim(),
+                                _nameC.text,
+                                widget.coursesId,
+                              ),
                             ),
                     title: state is LoadingAuthState ? "Loading" : "Sign Up",
                   ),
