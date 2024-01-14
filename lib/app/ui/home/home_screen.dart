@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           Text(
-                            state.user.email ?? "",
+                            state.user.userMetadata!["username"] ?? "",
                             style: AppTextStyle.titleTextStyle,
                           ),
                         ],
