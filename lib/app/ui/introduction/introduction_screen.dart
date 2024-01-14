@@ -1,3 +1,4 @@
+import 'package:education_app/app/route/route_name.dart';
 import 'package:education_app/app/utils/colors.dart';
 import 'package:education_app/app/utils/extension.dart';
 import 'package:education_app/app/utils/text_style.dart';
@@ -8,6 +9,7 @@ import 'package:education_app/domain/event/introduction_event.dart';
 import 'package:education_app/domain/state/introduction_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class IntroductionScreen extends StatefulWidget {
   const IntroductionScreen({super.key});
@@ -153,7 +155,19 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                     15.h,
                     const Spacer(),
                     CustomButtonWidget(
-                      onPressed: () {},
+                      onPressed: programmingLanguageCourses.course.length < 2
+                          ? null
+                          : () {
+                              List<int> data = [];
+                              for (final course
+                                  in programmingLanguageCourses.course) {
+                                data.add(course.id!);
+                              }
+                              context.pushReplacement(AppRouteName.signUpScreen,
+                                  extra: {
+                                    "courses_id": data,
+                                  });
+                            },
                       title: "Next",
                     ),
                   ],

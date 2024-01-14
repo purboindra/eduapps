@@ -42,7 +42,10 @@ class AppRouter {
       GoRoute(
         path: AppRouteName.signUpScreen,
         builder: (BuildContext context, GoRouterState state) {
-          return const SignUpScreen();
+          final data = state.extra as Map<String, dynamic>;
+          return SignUpScreen(
+            coursesId: data["courses_id"],
+          );
         },
       ),
       GoRoute(
