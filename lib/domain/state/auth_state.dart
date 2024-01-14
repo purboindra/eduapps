@@ -46,11 +46,19 @@ final class SuccessSignInState extends AuthState {
   List<Object> get props => [authResponse];
 }
 
-final class SuccessGetCurrentUser extends AuthState {
+final class SuccessGetCurrentUserState extends AuthState {
   final User user;
 
-  SuccessGetCurrentUser(this.user);
+  SuccessGetCurrentUserState(this.user);
 
   @override
   List<Object> get props => [user];
+}
+
+final class CheckUserAlreadyLoggedInState extends AuthState {
+  final bool isLogIn;
+  CheckUserAlreadyLoggedInState(this.isLogIn);
+
+  @override
+  List<Object> get props => [isLogIn];
 }

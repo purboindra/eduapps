@@ -1,7 +1,10 @@
 import 'package:education_app/app/route/route_name.dart';
 import 'package:education_app/app/utils/extension.dart';
 import 'package:education_app/app/utils/text_style.dart';
+import 'package:education_app/domain/bloc/auth_bloc.dart';
+import 'package:education_app/domain/state/auth_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,9 +23,15 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _runTimer() async {
-    await Future.delayed(const Duration(seconds: 2));
-    await Future.delayed(Duration.zero, () {
-      context.go(AppRouteName.onBoardScreen);
+    Future.delayed(const Duration(seconds: 1)).then((_) {
+      final state = context.read<AuthBloc>().state;
+      if (state is CheckUserAlreadyLoggedInState) {
+        if (state.isLogIn) {
+          context.go(AppRouteName.mainScreen);
+        } else {
+          context.go(AppRouteName.onBoardScreen);
+        }
+      }
     });
   }
 

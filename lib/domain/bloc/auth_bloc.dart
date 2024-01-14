@@ -4,12 +4,27 @@ import 'package:education_app/domain/event/auth_event.dart';
 import 'package:education_app/domain/repositories/auth_repository.dart';
 import 'package:education_app/domain/state/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
   AuthBloc(this.authRepository) : super(InitialAuthState()) {
     on<SignUpEvent>(_handleSignUp);
     on<SignInEvent>(_handleSignIn);
     on<GetCurrentUserEvent>(_handleGetCurrentUser);
+    on<CheckuserAlreadyLoggedInEvent>(_handleCheckUserAlreadyLoggedIn);
+  }
+
+  void _handleCheckUserAlreadyLoggedIn(
+      CheckuserAlreadyLoggedInEvent event, Emitter<AuthState> emit) async {
+    emit(LoadingAuthState());
+    try {
+      AppPrint.debugPrint("CheckuserAlreadyLoggedInEvent CALLED");
+      final user = supabase.Supabase.instance.client.auth.currentUser;
+      emit(CheckUserAlreadyLoggedInState(user != null));
+    } catch (e) {
+      AppPrint.debugPrint("ERROR FROM CHECK USER ALREADY LOGGED IN $e");
+      emit(InitialAuthState());
+    }
   }
 
   void _handleGetCurrentUser(
@@ -18,7 +33,7 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
     try {
       final user = await authRepository.getCurrentUser();
       if (user != null) {
-        emit(SuccessGetCurrentUser(user));
+        emit(SuccessGetCurrentUserState(user));
       } else {
         throw Exception("Error get current user");
       }

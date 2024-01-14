@@ -5,6 +5,7 @@ import 'package:education_app/data/repositories/auth_repository_impl.dart';
 import 'package:education_app/dependencies_injection.dart/dependency_injection.dart';
 import 'package:education_app/domain/bloc/auth_bloc.dart';
 import 'package:education_app/domain/cubit/main_cubit.dart';
+import 'package:education_app/domain/event/auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -43,7 +44,9 @@ class MyApp extends StatelessWidget {
       value: _authRepositoryImpl,
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => AuthBloc(_authRepositoryImpl)),
+          BlocProvider(
+              create: (_) => AuthBloc(_authRepositoryImpl)
+                ..add(CheckuserAlreadyLoggedInEvent())),
           BlocProvider(
             create: (_) => MainCubit(),
           ),

@@ -4,7 +4,10 @@ import 'package:education_app/app/ui/on_board/on_board_screen.dart';
 import 'package:education_app/app/ui/sign_in/sign_in_screen.dart';
 import 'package:education_app/app/ui/sign_up/sign_up_screen.dart';
 import 'package:education_app/app/ui/splash/splash_screen.dart';
+import 'package:education_app/domain/bloc/auth_bloc.dart' as authBloc;
+import 'package:education_app/domain/state/auth_state.dart' as authState;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
@@ -14,7 +17,13 @@ class AppRouter {
       GoRoute(
         path: AppRouteName.splashScreen,
         builder: (BuildContext context, GoRouterState state) {
-          return const SplashScreen();
+          return BlocBuilder<authBloc.AuthBloc, authState.AuthState>(
+            buildWhen: (previous, current) =>
+                previous != authState.InitialAuthState(),
+            builder: (context, state) {
+              return const SplashScreen();
+            },
+          );
         },
       ),
       GoRoute(
@@ -38,7 +47,7 @@ class AppRouter {
       GoRoute(
         path: AppRouteName.mainScreen,
         builder: (BuildContext context, GoRouterState state) {
-          return MainScreen();
+          return const MainScreen();
         },
       ),
     ],

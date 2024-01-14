@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (context, state) {
                 if (state is LoadingAuthState) {
                   return const SizedBox();
-                } else if (state is SuccessGetCurrentUser) {
+                } else if (state is SuccessGetCurrentUserState) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

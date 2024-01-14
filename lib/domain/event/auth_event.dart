@@ -32,3 +32,10 @@ final class GetCurrentUserEvent extends AuthEvent {
   @override
   List<Object> get props => [];
 }
+
+final class CheckuserAlreadyLoggedInEvent extends AuthEvent {
+  CheckuserAlreadyLoggedInEvent();
+
+  @override
+  List<Object> get props => [];
+}
