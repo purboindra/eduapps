@@ -25,3 +25,10 @@ final class SignInEvent extends AuthEvent {
   @override
   List<Object> get props => [email, password];
 }
+
+final class GetCurrentUserEvent extends AuthEvent {
+  GetCurrentUserEvent();
+
+  @override
+  List<Object> get props => [];
+}

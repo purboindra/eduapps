@@ -2,7 +2,10 @@ import 'package:education_app/app/utils/colors.dart';
 import 'package:education_app/app/utils/extension.dart';
 import 'package:education_app/app/utils/text_style.dart';
 import 'package:education_app/app/widgets/custom_textfield_widget.dart';
+import 'package:education_app/domain/bloc/auth_bloc.dart';
+import 'package:education_app/domain/state/auth_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,42 +26,51 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: ListView(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Hello...",
-                      style: AppTextStyle.titleTextStyle.copyWith(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.secondaryBlackColor,
+            BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is LoadingAuthState) {
+                  return const SizedBox();
+                } else if (state is SuccessGetCurrentUser) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Hello...",
+                            style: AppTextStyle.titleTextStyle.copyWith(
+                              fontSize: 32,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.secondaryBlackColor,
+                            ),
+                          ),
+                          Text(
+                            state.user.email ?? "",
+                            style: AppTextStyle.titleTextStyle,
+                          ),
+                        ],
                       ),
-                    ),
-                    const Text(
-                      "Hardline Scott",
-                      style: AppTextStyle.titleTextStyle,
-                    ),
-                  ],
-                ),
-                Card(
-                  elevation: 11,
-                  child: Container(
-                    width: MediaQuery.of(context).size.height * 0.09,
-                    height: MediaQuery.of(context).size.height * 0.09,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        width: 10,
-                        color: AppColors.primaryWhiteColor,
+                      Card(
+                        elevation: 11,
+                        child: Container(
+                          width: MediaQuery.of(context).size.height * 0.09,
+                          height: MediaQuery.of(context).size.height * 0.09,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              width: 10,
+                              color: AppColors.primaryWhiteColor,
+                            ),
+                            color: Colors.red,
+                          ),
+                        ),
                       ),
-                      color: Colors.red,
-                    ),
-                  ),
-                ),
-              ],
+                    ],
+                  );
+                }
+                return const SizedBox();
+              },
             ),
             20.h,
             CustomTextFieldWidget(

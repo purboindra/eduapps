@@ -11,11 +11,6 @@ class AuthRepositoryImpl implements AuthRepository {
         .signUp(password: password, email: email, data: {
       "username": username,
     });
-    // for (final user in response.user!.identities!) {
-    //   if (user.id == response.user!.id) {
-    //     throw Exception("User already registered!");
-    //   }
-    // }
     return response;
   }
 
@@ -25,5 +20,11 @@ class AuthRepositoryImpl implements AuthRepository {
     final response = await Supabase.instance.client.auth
         .signInWithPassword(password: password, email: email);
     return response;
+  }
+
+  @override
+  Future<User?> getCurrentUser() async {
+    final user = Supabase.instance.client.auth.currentUser;
+    return user;
   }
 }

@@ -1,6 +1,8 @@
 import 'package:education_app/app/ui/home/home_screen.dart';
 import 'package:education_app/app/utils/colors.dart';
+import 'package:education_app/domain/bloc/auth_bloc.dart';
 import 'package:education_app/domain/cubit/main_cubit.dart';
+import 'package:education_app/domain/event/auth_event.dart';
 import 'package:education_app/domain/state/main_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -46,8 +48,19 @@ final List<Widget> _body = [
   ),
 ];
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  @override
+  void initState() {
+    context.read<AuthBloc>().add(GetCurrentUserEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

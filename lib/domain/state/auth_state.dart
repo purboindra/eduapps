@@ -45,3 +45,12 @@ final class SuccessSignInState extends AuthState {
   @override
   List<Object> get props => [authResponse];
 }
+
+final class SuccessGetCurrentUser extends AuthState {
+  final User user;
+
+  SuccessGetCurrentUser(this.user);
+
+  @override
+  List<Object> get props => [user];
+}

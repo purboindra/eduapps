@@ -1,3 +1,4 @@
+import 'package:education_app/app/utils/app_print.dart';
 import 'package:education_app/domain/bloc/base_bloc.dart';
 import 'package:education_app/domain/event/auth_event.dart';
 import 'package:education_app/domain/repositories/auth_repository.dart';
@@ -8,6 +9,22 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
   AuthBloc(this.authRepository) : super(InitialAuthState()) {
     on<SignUpEvent>(_handleSignUp);
     on<SignInEvent>(_handleSignIn);
+    on<GetCurrentUserEvent>(_handleGetCurrentUser);
+  }
+
+  void _handleGetCurrentUser(
+      GetCurrentUserEvent event, Emitter<AuthState> emit) async {
+    emit(LoadingAuthState());
+    try {
+      final user = await authRepository.getCurrentUser();
+      if (user != null) {
+        emit(SuccessGetCurrentUser(user));
+      } else {
+        throw Exception("Error get current user");
+      }
+    } catch (e) {
+      AppPrint.debugPrint("ERROR FROM GET CURRENT USER $e");
+    }
   }
 
   void _handleSignIn(SignInEvent event, Emitter<AuthState> emit) async {
