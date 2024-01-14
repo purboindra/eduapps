@@ -22,6 +22,7 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       emit(SuccessSignOutState());
     } catch (e) {
       AppPrint.debugPrint("ERROR SIGN OUT $e");
+      emit(InitialAuthState());
     }
   }
 
@@ -29,7 +30,6 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       CheckuserAlreadyLoggedInEvent event, Emitter<AuthState> emit) async {
     emit(LoadingAuthState());
     try {
-      AppPrint.debugPrint("CheckuserAlreadyLoggedInEvent CALLED");
       final user = supabase.Supabase.instance.client.auth.currentUser;
       emit(CheckUserAlreadyLoggedInState(user != null));
     } catch (e) {
@@ -87,8 +87,6 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       }
     } catch (e) {
       emit(ErrorSignUpState(e.toString()));
-    } finally {
-      emit(InitialAuthState());
     }
   }
 
