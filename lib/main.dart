@@ -3,7 +3,10 @@ import 'package:education_app/app/utils/colors.dart';
 import 'package:education_app/app_bloc.dart';
 import 'package:education_app/data/repositories/auth_repository_impl.dart';
 import 'package:education_app/dependencies_injection.dart/dependency_injection.dart';
+import 'package:education_app/dependencies_injection.dart/inject.dart';
 import 'package:education_app/domain/bloc/auth_bloc.dart';
+import 'package:education_app/domain/bloc/introduction_bloc.dart';
+import 'package:education_app/domain/cubit/choose_programming_cubit.dart';
 import 'package:education_app/domain/cubit/main_cubit.dart';
 import 'package:education_app/domain/event/auth_event.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +50,12 @@ class MyApp extends StatelessWidget {
           BlocProvider(
               create: (_) => AuthBloc(_authRepositoryImpl)
                 ..add(CheckuserAlreadyLoggedInEvent())),
+          BlocProvider(
+            create: (_) => IntroductionBloc(inject()),
+          ),
+          BlocProvider(
+            create: (_) => ChooseProgrammingCubit(),
+          ),
           BlocProvider(
             create: (_) => MainCubit(),
           ),

@@ -4,4 +4,5 @@ class AppRouteName {
   static const signInScreen = '/sign-in';
   static const signUpScreen = '/sign-up';
   static const mainScreen = '/main';
+  static const introScreen = '/introduction-screen';
 }

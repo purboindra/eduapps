@@ -1,4 +1,5 @@
 import 'package:education_app/app/route/route_name.dart';
+import 'package:education_app/app/ui/introduction/introduction_screen.dart';
 import 'package:education_app/app/ui/main/main_screen.dart';
 import 'package:education_app/app/ui/on_board/on_board_screen.dart';
 import 'package:education_app/app/ui/sign_in/sign_in_screen.dart';
@@ -48,6 +49,12 @@ class AppRouter {
         path: AppRouteName.mainScreen,
         builder: (BuildContext context, GoRouterState state) {
           return const MainScreen();
+        },
+      ),
+      GoRoute(
+        path: AppRouteName.introScreen,
+        builder: (BuildContext context, GoRouterState state) {
+          return const IntroductionScreen();
         },
       ),
     ],
