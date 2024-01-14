@@ -39,3 +39,10 @@ final class CheckuserAlreadyLoggedInEvent extends AuthEvent {
   @override
   List<Object> get props => [];
 }
+
+final class SignOutEvent extends AuthEvent {
+  SignOutEvent();
+
+  @override
+  List<Object> get props => [];
+}

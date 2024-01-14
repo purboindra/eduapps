@@ -62,3 +62,10 @@ final class CheckUserAlreadyLoggedInState extends AuthState {
   @override
   List<Object> get props => [isLogIn];
 }
+
+final class SuccessSignOutState extends AuthState {
+  SuccessSignOutState();
+
+  @override
+  List<Object> get props => [];
+}

@@ -12,6 +12,17 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
     on<SignInEvent>(_handleSignIn);
     on<GetCurrentUserEvent>(_handleGetCurrentUser);
     on<CheckuserAlreadyLoggedInEvent>(_handleCheckUserAlreadyLoggedIn);
+    on<SignOutEvent>(_handleSignOut);
+  }
+
+  void _handleSignOut(SignOutEvent event, Emitter<AuthState> emit) async {
+    emit(LoadingAuthState());
+    try {
+      await authRepository.signOut();
+      emit(SuccessSignOutState());
+    } catch (e) {
+      AppPrint.debugPrint("ERROR SIGN OUT $e");
+    }
   }
 
   void _handleCheckUserAlreadyLoggedIn(

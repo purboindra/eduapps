@@ -5,11 +5,10 @@ abstract class AuthRepository {
       {required String email,
       required String password,
       required String username});
-
   Future<AuthResponse?> signIn({
     required String email,
     required String password,
   });
-
   Future<User?> getCurrentUser();
+  Future<void> signOut();
 }
