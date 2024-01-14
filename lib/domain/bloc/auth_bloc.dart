@@ -80,6 +80,7 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
           password: event.password,
           username: event.username);
       if (response != null) {
+        await authRepository.storeUserToDatabase(response.user!);
         emit(SuccessSignUpState(response));
       } else {
         throw Exception("Sorry, something went wrong!");

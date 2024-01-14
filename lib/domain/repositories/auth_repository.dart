@@ -11,4 +11,5 @@ abstract class AuthRepository {
   });
   Future<User?> getCurrentUser();
   Future<void> signOut();
+  Future<void> storeUserToDatabase(User user);
 }
