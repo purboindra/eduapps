@@ -1,4 +1,5 @@
 import 'package:education_app/app/ui/home/home_screen.dart';
+import 'package:education_app/app/ui/profile/profile_screen.dart';
 import 'package:education_app/app/utils/colors.dart';
 import 'package:education_app/domain/bloc/auth_bloc.dart';
 import 'package:education_app/domain/cubit/main_cubit.dart';
@@ -43,9 +44,7 @@ final List<Widget> _body = [
   const Center(
     child: Text("Achievement"),
   ),
-  const Center(
-    child: Text("Profile"),
-  ),
+  const ProfileScreen(),
 ];
 
 class MainScreen extends StatefulWidget {
