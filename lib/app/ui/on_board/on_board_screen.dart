@@ -6,6 +6,7 @@ import 'package:education_app/app/widgets/custom_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnBoardScreen extends StatelessWidget {
   const OnBoardScreen({super.key});
@@ -40,8 +41,13 @@ class OnBoardScreen extends StatelessWidget {
               const Spacer(),
               CustomButtonWidget(
                 title: "Choose Course",
-                onPressed: () =>
-                    context.pushReplacement(AppRouteName.introScreen),
+                onPressed: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  prefs.setBool("is_first_install", true);
+                  await Future.delayed(Duration.zero, () {
+                    context.pushReplacement(AppRouteName.introScreen);
+                  });
+                },
               ),
               30.h,
             ],

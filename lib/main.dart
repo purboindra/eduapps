@@ -51,7 +51,8 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(
               create: (_) => AuthBloc(_authRepositoryImpl)
-                ..add(CheckuserAlreadyLoggedInEvent())),
+                ..add(CheckuserAlreadyLoggedInEvent())
+                ..add(CheckIsFirstInstallEvent())),
           BlocProvider(
             create: (_) => IntroductionBloc(inject()),
           ),

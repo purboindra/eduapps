@@ -4,6 +4,7 @@ import 'package:education_app/domain/event/auth_event.dart';
 import 'package:education_app/domain/repositories/auth_repository.dart';
 import 'package:education_app/domain/state/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
@@ -12,6 +13,7 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
     on<SignInEvent>(_handleSignIn);
     on<GetCurrentUserEvent>(_handleGetCurrentUser);
     on<CheckuserAlreadyLoggedInEvent>(_handleCheckUserAlreadyLoggedIn);
+    on<CheckIsFirstInstallEvent>(_handleCheckIsFirstInstall);
     on<SignOutEvent>(_handleSignOut);
   }
 
@@ -19,6 +21,8 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
     emit(LoadingAuthState());
     try {
       await authRepository.signOut();
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setBool("is_first_install", false);
       emit(SuccessSignOutState());
     } catch (e) {
       AppPrint.debugPrint("ERROR SIGN OUT $e");
@@ -36,6 +40,11 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       AppPrint.debugPrint("ERROR FROM CHECK USER ALREADY LOGGED IN $e");
       emit(InitialAuthState());
     }
+  }
+
+  void _handleCheckIsFirstInstall(
+      CheckIsFirstInstallEvent event, Emitter<AuthState> emit) async {
+    emit(CheckIsFirstInstallState(await authRepository.isFirstInstall()));
   }
 
   void _handleGetCurrentUser(

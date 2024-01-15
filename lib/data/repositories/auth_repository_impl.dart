@@ -1,4 +1,5 @@
 import 'package:education_app/domain/repositories/auth_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -49,5 +50,11 @@ class AuthRepositoryImpl implements AuthRepository {
       "education_status": "student",
       "courses": user.userMetadata!["courses"]
     });
+  }
+
+  @override
+  Future<bool> isFirstInstall() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool("is_first_install") ?? true;
   }
 }

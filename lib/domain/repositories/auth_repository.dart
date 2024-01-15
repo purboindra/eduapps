@@ -1,6 +1,8 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class AuthRepository {
+  Future<bool> isFirstInstall();
+
   Future<AuthResponse?> signUp(
       {required String email,
       required String password,

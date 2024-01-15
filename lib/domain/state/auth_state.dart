@@ -63,6 +63,14 @@ final class CheckUserAlreadyLoggedInState extends AuthState {
   List<Object> get props => [isLogIn];
 }
 
+final class CheckIsFirstInstallState extends AuthState {
+  final bool isFirstInstall;
+  CheckIsFirstInstallState(this.isFirstInstall);
+
+  @override
+  List<Object> get props => [isFirstInstall];
+}
+
 final class SuccessSignOutState extends AuthState {
   SuccessSignOutState();
 
