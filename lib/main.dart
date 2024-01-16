@@ -6,13 +6,11 @@ import 'package:education_app/dependencies_injection.dart/dependency_injection.d
 import 'package:education_app/dependencies_injection.dart/inject.dart';
 import 'package:education_app/domain/bloc/auth_bloc.dart';
 import 'package:education_app/domain/bloc/home_bloc.dart';
-import 'package:education_app/domain/bloc/institution_bloc.dart';
 import 'package:education_app/domain/bloc/introduction_bloc.dart';
 import 'package:education_app/domain/cubit/choose_programming_cubit.dart';
 import 'package:education_app/domain/cubit/main_cubit.dart';
 import 'package:education_app/domain/event/auth_event.dart';
 import 'package:education_app/domain/event/home_event.dart';
-import 'package:education_app/domain/event/institution_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -69,12 +67,7 @@ class MyApp extends StatelessWidget {
             create: (_) => MainCubit(),
           ),
           BlocProvider(
-            create: (_) =>
-                InstituionBloc(inject())..add(GetAllInstitutionEvent()),
-          ),
-          BlocProvider(
-            create: (_) => HomeBloc(inject())..add(GetAllTeacherEvent()),
-          ),
+              create: (_) => HomeBloc(inject())..add(const GetAllDataEvent())),
         ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
