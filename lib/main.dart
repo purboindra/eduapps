@@ -6,11 +6,13 @@ import 'package:education_app/dependencies_injection.dart/dependency_injection.d
 import 'package:education_app/dependencies_injection.dart/inject.dart';
 import 'package:education_app/domain/bloc/auth_bloc.dart';
 import 'package:education_app/domain/bloc/home_bloc.dart';
+import 'package:education_app/domain/bloc/institution_bloc.dart';
 import 'package:education_app/domain/bloc/introduction_bloc.dart';
 import 'package:education_app/domain/cubit/choose_programming_cubit.dart';
 import 'package:education_app/domain/cubit/main_cubit.dart';
 import 'package:education_app/domain/event/auth_event.dart';
 import 'package:education_app/domain/event/home_event.dart';
+import 'package:education_app/domain/event/institution_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -26,6 +28,9 @@ void main() async {
   await Supabase.initialize(
     url: dotenv.env["SUPABASE_URL"] ?? "",
     anonKey: dotenv.env["SUPABASE_ANON_KEY"] ?? "",
+    authOptions: const FlutterAuthClientOptions(
+      authFlowType: AuthFlowType.pkce,
+    ),
   );
 
   Bloc.observer = AppBlocObserver();
@@ -52,7 +57,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(
               create: (_) => AuthBloc(_authRepositoryImpl)
                 ..add(CheckuserAlreadyLoggedInEvent())
-                ..add(CheckIsFirstInstallEvent())),
+              // ..add(CheckIsFirstInstallEvent())
+              ),
           BlocProvider(
             create: (_) => IntroductionBloc(inject()),
           ),
@@ -61,6 +67,10 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (_) => MainCubit(),
+          ),
+          BlocProvider(
+            create: (_) =>
+                InstituionBloc(inject())..add(GetAllInstitutionEvent()),
           ),
           BlocProvider(
             create: (_) => HomeBloc(inject())..add(GetAllTeacherEvent()),

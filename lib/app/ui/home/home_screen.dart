@@ -4,8 +4,10 @@ import 'package:education_app/app/utils/text_style.dart';
 import 'package:education_app/app/widgets/custom_textfield_widget.dart';
 import 'package:education_app/domain/bloc/auth_bloc.dart';
 import 'package:education_app/domain/bloc/home_bloc.dart';
+import 'package:education_app/domain/bloc/institution_bloc.dart';
 import 'package:education_app/domain/state/auth_state.dart';
 import 'package:education_app/domain/state/home_state.dart';
+import 'package:education_app/domain/state/instituion_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -183,73 +185,88 @@ class _HomeScreenState extends State<HomeScreen> {
               style: AppTextStyle.titleTextStyle,
             ),
             10.h,
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return SizedBox(
-                  height: 180,
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 145,
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          8.w,
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+            BlocBuilder<InstituionBloc, InstituionState>(
+              builder: (context, state) {
+                if (state is LoadingGetAllInstitutionState) {
+                  return const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  );
+                } else if (state is SuccessGetAllInstitution) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: state.allInstituions.length,
+                    itemBuilder: (context, index) {
+                      final institution = state.allInstituions[index];
+                      return SizedBox(
+                        height: 190,
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
                               children: [
-                                Text(
-                                  "Title $index",
-                                  style: AppTextStyle.titleTextStyle,
+                                Container(
+                                  width: 145,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primaryColor,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
                                 ),
-                                5.h,
-                                Row(
-                                  children: [
-                                    Row(
-                                      children: List.generate(
-                                        5,
-                                        (index) => Icon(
-                                          Icons.star,
-                                          size: 17,
-                                          color: Colors.yellow.shade700,
-                                        ),
+                                8.w,
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        institution.title!,
+                                        style: AppTextStyle.titleTextStyle,
                                       ),
-                                    ),
-                                    7.w,
-                                    const Text(
-                                      "4.5 (413)",
-                                      style: AppTextStyle.commonTextStyle,
-                                    )
-                                  ],
-                                ),
-                                10.h,
-                                const Text(
-                                  "Bio Science",
-                                  style: AppTextStyle.subTitleTextStyle,
-                                ),
-                                2.h,
-                                const Text(
-                                  "Studying how CBD awareness and availability as it related to pain management alternatives.",
-                                  style: AppTextStyle.commonTextStyle,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
+                                      5.h,
+                                      Row(
+                                        children: [
+                                          Row(
+                                            children: List.generate(
+                                              5,
+                                              (index) => Icon(
+                                                Icons.star,
+                                                size: 17,
+                                                color: Colors.yellow.shade700,
+                                              ),
+                                            ),
+                                          ),
+                                          7.w,
+                                          Text(
+                                            "${institution.rating}",
+                                            style: AppTextStyle.commonTextStyle,
+                                          )
+                                        ],
+                                      ),
+                                      10.h,
+                                      Text(
+                                        institution.subject!,
+                                        style: AppTextStyle.subTitleTextStyle,
+                                      ),
+                                      2.h,
+                                      Text(
+                                        institution.description!,
+                                        style: AppTextStyle.commonTextStyle,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
+                        ),
+                      );
+                    },
+                  );
+                }
+                return const Center(
+                  child: Text("Sorry, something went wrong..."),
                 );
               },
             )
