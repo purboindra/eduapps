@@ -4,10 +4,8 @@ import 'package:education_app/app/utils/text_style.dart';
 import 'package:education_app/app/widgets/custom_textfield_widget.dart';
 import 'package:education_app/domain/bloc/auth_bloc.dart';
 import 'package:education_app/domain/bloc/home_bloc.dart';
-import 'package:education_app/domain/bloc/institution_bloc.dart';
 import 'package:education_app/domain/state/auth_state.dart';
 import 'package:education_app/domain/state/home_state.dart';
-import 'package:education_app/domain/state/instituion_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,55 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: ListView(
           children: [
-            BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, state) {
-                if (state is LoadingAuthState) {
-                  return const SizedBox();
-                } else if (state is SuccessGetCurrentUserState) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Hello...",
-                            style: AppTextStyle.titleTextStyle.copyWith(
-                              fontSize: 32,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.secondaryBlackColor,
-                            ),
-                          ),
-                          Text(
-                            state.user.userMetadata!["username"] ?? "",
-                            style: AppTextStyle.titleTextStyle,
-                          ),
-                        ],
-                      ),
-                      Card(
-                        elevation: 11,
-                        child: Container(
-                          width: MediaQuery.of(context).size.height * 0.09,
-                          height: MediaQuery.of(context).size.height * 0.09,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              width: 10,
-                              color: AppColors.primaryWhiteColor,
-                            ),
-                            image: const DecorationImage(
-                              image:
-                                  AssetImage("assets/image/empty_avatar.png"),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                }
-                return const SizedBox();
-              },
-            ),
+            const _BuildAvatarWidget(),
             20.h,
             CustomTextFieldWidget(
                 title: "",
@@ -104,175 +54,272 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 hintText: "Search Teacher"),
+            20.h,
+            const Text(
+              "Challange Yourself With a Quiz",
+              style: AppTextStyle.titleTextStyle,
+            ),
+            10.h,
+            BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is SuccessGetCurrentUserState) {
+                  return SizedBox(
+                    height: 50,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: state.user.userMetadata?["courses"].length,
+                      itemBuilder: (context, index) {
+                        return Text(
+                            "${state.user.userMetadata?["courses"][index]}");
+                      },
+                    ),
+                  );
+                }
+                return const Text("No Data");
+              },
+            ),
             29.h,
             const Text(
               "Popular Teachers",
               style: AppTextStyle.titleTextStyle,
             ),
             10.h,
-            BlocBuilder<HomeBloc, HomeState>(
-              builder: (context, state) {
-                if (state is LoadingGetTeacherState) {
-                  return const SizedBox(
-                    height: 180,
-                    child: Center(
-                      child: CircularProgressIndicator.adaptive(),
-                    ),
-                  );
-                } else if (state is SuccessGetTeacherState) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    height: 180,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: state.teachers.length,
-                      itemBuilder: (context, index) {
-                        final teacher = state.teachers[index];
-                        return Container(
-                          width: 140,
-                          margin: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Card(
-                            surfaceTintColor: AppColors.backgroundColor,
-                            child: Container(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: SizedBox(
-                                      width: 115,
-                                      child: teacher.photoUrl != null
-                                          ? Image.network(
-                                              teacher.photoUrl!,
-                                              fit: BoxFit.cover,
-                                            )
-                                          : Image.asset(
-                                              "assets/image/default_avatar.jpg",
-                                              fit: BoxFit.cover,
-                                            ),
-                                    ),
-                                  ),
-                                  10.h,
-                                  Text(
-                                    teacher.name!,
-                                    style: AppTextStyle.titleTextStyle.copyWith(
-                                      fontSize: 16,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                  Text(
-                                    teacher.subject!,
-                                    style: AppTextStyle.commonTextStyle,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                }
-                return const SizedBox();
-              },
-            ),
+            const _BuildPopularTeacherWidget(),
             29.h,
             const Text(
               "Popular Institutions",
               style: AppTextStyle.titleTextStyle,
             ),
             10.h,
-            BlocBuilder<InstituionBloc, InstituionState>(
-              builder: (context, state) {
-                if (state is LoadingGetAllInstitutionState) {
-                  return const Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  );
-                } else if (state is SuccessGetAllInstitution) {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: state.allInstituions.length,
-                    itemBuilder: (context, index) {
-                      final institution = state.allInstituions[index];
-                      return SizedBox(
-                        height: 190,
-                        child: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 145,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primaryColor,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                8.w,
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        institution.title!,
-                                        style: AppTextStyle.titleTextStyle,
-                                      ),
-                                      5.h,
-                                      Row(
-                                        children: [
-                                          Row(
-                                            children: List.generate(
-                                              5,
-                                              (index) => Icon(
-                                                Icons.star,
-                                                size: 17,
-                                                color: Colors.yellow.shade700,
-                                              ),
-                                            ),
-                                          ),
-                                          7.w,
-                                          Text(
-                                            "${institution.rating}",
-                                            style: AppTextStyle.commonTextStyle,
-                                          )
-                                        ],
-                                      ),
-                                      10.h,
-                                      Text(
-                                        institution.subject!,
-                                        style: AppTextStyle.subTitleTextStyle,
-                                      ),
-                                      2.h,
-                                      Text(
-                                        institution.description!,
-                                        style: AppTextStyle.commonTextStyle,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }
-                return const Center(
-                  child: Text("Sorry, something went wrong..."),
-                );
-              },
-            )
+            const _BuildPopularInstitutionWidget()
           ],
         ),
       ),
+    );
+  }
+}
+
+class _BuildPopularInstitutionWidget extends StatelessWidget {
+  const _BuildPopularInstitutionWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state is LoadingGetAllDataState) {
+          return const Center(
+            child: CircularProgressIndicator.adaptive(),
+          );
+        } else if (state is SuccessGetAllDataState) {
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: state.allInstituions.length,
+            itemBuilder: (context, index) {
+              final institution = state.allInstituions[index];
+              return SizedBox(
+                height: 190,
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 145,
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryColor,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        8.w,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                institution.title!,
+                                style: AppTextStyle.titleTextStyle,
+                              ),
+                              5.h,
+                              Row(
+                                children: [
+                                  Row(
+                                    children: List.generate(
+                                      5,
+                                      (index) => Icon(
+                                        Icons.star,
+                                        size: 17,
+                                        color: Colors.yellow.shade700,
+                                      ),
+                                    ),
+                                  ),
+                                  7.w,
+                                  Text(
+                                    "${institution.rating}",
+                                    style: AppTextStyle.commonTextStyle,
+                                  )
+                                ],
+                              ),
+                              10.h,
+                              Text(
+                                institution.subject!,
+                                style: AppTextStyle.subTitleTextStyle,
+                              ),
+                              2.h,
+                              Text(
+                                institution.description!,
+                                style: AppTextStyle.commonTextStyle,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        }
+        return const Center(
+          child: Text("Sorry, something went wrong..."),
+        );
+      },
+    );
+  }
+}
+
+class _BuildPopularTeacherWidget extends StatelessWidget {
+  const _BuildPopularTeacherWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state is LoadingGetAllDataState) {
+          return const SizedBox(
+            height: 180,
+            child: Center(
+              child: CircularProgressIndicator.adaptive(),
+            ),
+          );
+        } else if (state is SuccessGetAllDataState) {
+          return Container(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            height: 180,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: state.teachers.length,
+              itemBuilder: (context, index) {
+                final teacher = state.teachers[index];
+                return Container(
+                  width: 140,
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Card(
+                    surfaceTintColor: AppColors.backgroundColor,
+                    child: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              width: 115,
+                              child: teacher.photoUrl != null
+                                  ? Image.network(
+                                      teacher.photoUrl!,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(
+                                      "assets/image/default_avatar.jpg",
+                                      fit: BoxFit.cover,
+                                    ),
+                            ),
+                          ),
+                          10.h,
+                          Text(
+                            teacher.name!,
+                            style: AppTextStyle.titleTextStyle.copyWith(
+                              fontSize: 16,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                          Text(
+                            teacher.subject!,
+                            style: AppTextStyle.commonTextStyle,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        }
+        return const SizedBox();
+      },
+    );
+  }
+}
+
+class _BuildAvatarWidget extends StatelessWidget {
+  const _BuildAvatarWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is LoadingAuthState) {
+          return const SizedBox();
+        } else if (state is SuccessGetCurrentUserState) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Hello...",
+                    style: AppTextStyle.titleTextStyle.copyWith(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.secondaryBlackColor,
+                    ),
+                  ),
+                  Text(
+                    state.user.userMetadata!["username"] ?? "",
+                    style: AppTextStyle.titleTextStyle,
+                  ),
+                ],
+              ),
+              Card(
+                elevation: 11,
+                child: Container(
+                  width: MediaQuery.of(context).size.height * 0.09,
+                  height: MediaQuery.of(context).size.height * 0.09,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      width: 10,
+                      color: AppColors.primaryWhiteColor,
+                    ),
+                    image: const DecorationImage(
+                      image: AssetImage("assets/image/empty_avatar.png"),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+        return const SizedBox();
+      },
     );
   }
 }
