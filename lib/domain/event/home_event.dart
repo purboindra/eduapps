@@ -8,3 +8,12 @@ sealed class HomeEvent extends Equatable {
 }
 
 final class GetAllTeacherEvent extends HomeEvent {}
+
+final class GetAllInstitutionEvent extends HomeEvent {}
+
+final class GetAllDataEvent extends HomeEvent {
+  const GetAllDataEvent();
+
+  @override
+  List<Object> get props => [];
+}
