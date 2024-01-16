@@ -13,7 +13,6 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
     on<SignInEvent>(_handleSignIn);
     on<GetCurrentUserEvent>(_handleGetCurrentUser);
     on<CheckuserAlreadyLoggedInEvent>(_handleCheckUserAlreadyLoggedIn);
-    on<CheckIsFirstInstallEvent>(_handleCheckIsFirstInstall);
     on<SignOutEvent>(_handleSignOut);
   }
 
@@ -35,16 +34,15 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
     emit(LoadingAuthState());
     try {
       final user = supabase.Supabase.instance.client.auth.currentUser;
-      emit(CheckUserAlreadyLoggedInState(user != null));
+
+      final isFirstInstall = await authRepository.isFirstInstall();
+      emit(
+        CheckUserAlreadyLoggedInState(user != null, isFirstInstall),
+      );
     } catch (e) {
       AppPrint.debugPrint("ERROR FROM CHECK USER ALREADY LOGGED IN $e");
       emit(InitialAuthState());
     }
-  }
-
-  void _handleCheckIsFirstInstall(
-      CheckIsFirstInstallEvent event, Emitter<AuthState> emit) async {
-    emit(CheckIsFirstInstallState(await authRepository.isFirstInstall()));
   }
 
   void _handleGetCurrentUser(

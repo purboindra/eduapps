@@ -46,13 +46,6 @@ final class CheckuserAlreadyLoggedInEvent extends AuthEvent {
   List<Object> get props => [];
 }
 
-final class CheckIsFirstInstallEvent extends AuthEvent {
-  CheckIsFirstInstallEvent();
-
-  @override
-  List<Object> get props => [];
-}
-
 final class SignOutEvent extends AuthEvent {
   SignOutEvent();
 
