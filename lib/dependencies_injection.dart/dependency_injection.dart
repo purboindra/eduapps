@@ -1,10 +1,8 @@
 import 'package:education_app/data/repositories/auth_repository_impl.dart';
 import 'package:education_app/data/repositories/home_repository_impl.dart';
-import 'package:education_app/data/repositories/institution_repository_impl.dart';
 import 'package:education_app/data/repositories/introduction_repository_impl.dart';
 import 'package:education_app/domain/repositories/auth_repository.dart';
 import 'package:education_app/domain/repositories/home_repository.dart';
-import 'package:education_app/domain/repositories/institution_repository.dart';
 import 'package:education_app/domain/repositories/introduction_repository.dart';
 import 'package:get_it/get_it.dart';
 
@@ -16,6 +14,5 @@ class DependencyInject {
     getIt.registerSingleton<IntroductionRepository>(
         IntroductionRepositoryImpl());
     getIt.registerSingleton<HomeRepository>(HomeRepositoryImpl());
-    getIt.registerSingleton<InstitutionRepository>(InstitutionRepositoryImpl());
   }
 }
