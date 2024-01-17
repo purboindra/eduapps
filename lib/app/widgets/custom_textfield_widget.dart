@@ -38,7 +38,7 @@ class CustomTextFieldWidget extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        11.h,
+        title.isNotEmpty ? 11.h : 0.h,
         Material(
           elevation: 7.0,
           shadowColor: AppColors.primaryBlackColor.withOpacity(0.3),
