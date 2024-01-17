@@ -3,8 +3,10 @@ import 'package:education_app/app/utils/extension.dart';
 import 'package:education_app/app/utils/text_style.dart';
 import 'package:education_app/app/widgets/custom_textfield_widget.dart';
 import 'package:education_app/domain/bloc/auth_bloc.dart';
+import 'package:education_app/domain/bloc/course_bloc.dart';
 import 'package:education_app/domain/bloc/home_bloc.dart';
 import 'package:education_app/domain/state/auth_state.dart';
+import 'package:education_app/domain/state/course_state.dart';
 import 'package:education_app/domain/state/home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           children: [
             const _BuildAvatarWidget(),
-            20.h,
+            10.h,
             CustomTextFieldWidget(
                 title: "",
                 textEditingController: _searchC,
@@ -53,29 +55,60 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                hintText: "Search Teacher"),
+                hintText: "Find a Teacher"),
             20.h,
             const Text(
               "Challange Yourself With a Quiz",
               style: AppTextStyle.titleTextStyle,
             ),
             10.h,
-            BlocBuilder<AuthBloc, AuthState>(
+            BlocBuilder<CourseBloc, CourseState>(
               builder: (context, state) {
-                if (state is SuccessGetCurrentUserState) {
-                  return SizedBox(
+                if (state is LoadingGetAllCourseState) {
+                  return const SizedBox(
                     height: 50,
+                    child: CircularProgressIndicator.adaptive(),
+                  );
+                } else if (state is SuccessGetAllCourseState) {
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.09,
                     child: ListView.builder(
+                      shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemCount: state.user.userMetadata?["courses"].length,
+                      itemCount: state.courses.length,
                       itemBuilder: (context, index) {
-                        return Text(
-                            "${state.user.userMetadata?["courses"][index]}");
+                        return Card(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 5),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        state.courses[index].imageUrl!,
+                                      ),
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  ),
+                                ),
+                                10.w,
+                                Text(
+                                  state.courses[index].title!,
+                                  style: AppTextStyle.subTitleTextStyle,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
                       },
                     ),
                   );
                 }
-                return const Text("No Data");
+                return const SizedBox();
               },
             ),
             29.h,

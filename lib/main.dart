@@ -5,6 +5,7 @@ import 'package:education_app/data/repositories/auth_repository_impl.dart';
 import 'package:education_app/dependencies_injection.dart/dependency_injection.dart';
 import 'package:education_app/dependencies_injection.dart/inject.dart';
 import 'package:education_app/domain/bloc/auth_bloc.dart';
+import 'package:education_app/domain/bloc/course_bloc.dart';
 import 'package:education_app/domain/bloc/home_bloc.dart';
 import 'package:education_app/domain/bloc/introduction_bloc.dart';
 import 'package:education_app/domain/cubit/choose_programming_cubit.dart';
@@ -65,6 +66,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (_) => MainCubit(),
+          ),
+          BlocProvider(
+            create: (_) => CourseBloc(inject()),
           ),
           BlocProvider(
               create: (_) => HomeBloc(inject())..add(const GetAllDataEvent())),
