@@ -9,13 +9,7 @@ class IntroductionBloc extends BaseBloc<IntroductionEvent, IntroductionState> {
   IntroductionBloc(this.introductionRepository)
       : super(IntroductionInitialState()) {
     on<GetAllCourseEvent>(_handleGetAllCourse);
-    // on<ChooseProgrammingLanguageEvent>(_handleTapChooseProgrammingLanguage);
   }
-
-  // void _handleTapChooseProgrammingLanguage(
-  //     ChooseProgrammingLanguageEvent event, Emitter<IntroductionState> emit) {
-  //   emit(ProgrammingLanguageListState([event.course]));
-  // }
 
   void _handleGetAllCourse(
       GetAllCourseEvent event, Emitter<IntroductionState> emit) async {
@@ -24,7 +18,7 @@ class IntroductionBloc extends BaseBloc<IntroductionEvent, IntroductionState> {
       final response = await introductionRepository.getAllCourse();
       emit(SuccessGetAllCourseState(response));
     } catch (e) {
-      AppPrint.debugPrint("ERROR GET ALL COURSE $e");
+      AppPrint.erroLog("ERROR GET ALL COURSE $e");
       emit(IntroductionInitialState());
     }
   }

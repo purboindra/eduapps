@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
   HomeBloc(this.homeRepository) : super(InitialHomeState()) {
-    // on<GetAllTeacherEvent>(_handleGetAllTeacher);
     on<GetAllDataEvent>(_handleGetAllDataEvent);
   }
 
@@ -19,35 +18,10 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
       final resultA = await homeRepository.getAllTeachers();
       emit(SuccessGetAllDataState(result, resultA));
     } catch (e) {
-      AppPrint.debugPrint("FAIL GET ALL INSTITUTION $e");
+      AppPrint.erroLog("FAIL GET ALL INSTITUTION $e");
       emit(InitialInstituionState());
     }
   }
-
-  // void _handleGetAllInstitution(
-  //     GetAllInstitutionEvent event, Emitter<HomeState> emit) async {
-  //   emit(const LoadingGetAllInstitutionState());
-  //   try {
-  //     final result = await homeRepository.getAllInstitutions();
-  //     final resultA = await homeRepository.getAllTeachers();
-  //     emit(SuccessGetAllDataState(result, resultA));
-  //   } catch (e) {
-  //     AppPrint.debugPrint("FAIL GET ALL INSTITUTION $e");
-  //     emit(InitialInstituionState());
-  //   }
-  // }
-
-  // void _handleGetAllTeacher(
-  //     GetAllTeacherEvent event, Emitter<HomeState> emit) async {
-  //   emit(LoadingGetTeacherState());
-  //   try {
-  //     final result = await homeRepository.getAllTeachers();
-  //     emit(SuccessGetTeacherState(result));
-  //   } catch (e) {
-  //     AppPrint.debugPrint("ERROR FROM GET ALL TEACHER $e");
-  //     emit(FailedGetTeacherState(e.toString()));
-  //   }
-  // }
 
   final HomeRepository homeRepository;
 }

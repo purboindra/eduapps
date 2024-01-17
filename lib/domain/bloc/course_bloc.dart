@@ -16,7 +16,7 @@ class CourseBloc extends BaseBloc<CourseEvent, CourseState> {
       final response = await homeRepository.getAllCourse(event.allCourse);
       emit(SuccessGetAllCourseState(response));
     } catch (e) {
-      AppPrint.debugPrint("ERROR FROM FETCH COURSE $e");
+      AppPrint.erroLog("ERROR FROM FETCH COURSE $e");
       emit(const InitialCourseState());
     }
   }

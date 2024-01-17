@@ -30,9 +30,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
     final programmingLanguageCourses =
         context.watch<ChooseProgrammingCubit>().state;
     return BlocConsumer<IntroductionBloc, IntroductionState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         if (state is LoadingGetAllCourseState) {
           return const Scaffold(

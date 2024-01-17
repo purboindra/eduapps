@@ -4,13 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AppBlocObserver extends BlocObserver {
   @override
   void onCreate(BlocBase bloc) {
-    AppPrint.debugPrint("BLOC ON CREATE $bloc");
+    AppPrint.debugLog("BLOC ON CREATE $bloc");
     super.onCreate(bloc);
   }
 
   @override
   void onChange(BlocBase bloc, Change change) {
-    AppPrint.debugPrint(
+    AppPrint.debugLog(
         "BLOC ON CHANGE CURRENT ${change.currentState} CHANGE ${change.nextState}");
     super.onChange(bloc, change);
   }

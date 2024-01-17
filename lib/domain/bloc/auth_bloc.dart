@@ -24,7 +24,7 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       prefs.setBool("is_first_install", false);
       emit(SuccessSignOutState());
     } catch (e) {
-      AppPrint.debugPrint("ERROR SIGN OUT $e");
+      AppPrint.erroLog("ERROR SIGN OUT $e");
       emit(InitialAuthState());
     }
   }
@@ -40,7 +40,7 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
         CheckUserAlreadyLoggedInState(user != null, isFirstInstall),
       );
     } catch (e) {
-      AppPrint.debugPrint("ERROR FROM CHECK USER ALREADY LOGGED IN $e");
+      AppPrint.erroLog("ERROR FROM CHECK USER ALREADY LOGGED IN $e");
       emit(InitialAuthState());
     }
   }
@@ -56,7 +56,7 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
         throw Exception("Error get current user");
       }
     } catch (e) {
-      AppPrint.debugPrint("ERROR FROM GET CURRENT USER $e");
+      AppPrint.erroLog("ERROR FROM GET CURRENT USER $e");
     }
   }
 
