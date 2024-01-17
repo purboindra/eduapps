@@ -1,11 +1,14 @@
+import 'package:education_app/app/utils/app_snackbar.dart';
 import 'package:education_app/app/utils/colors.dart';
 import 'package:education_app/app/utils/extension.dart';
 import 'package:education_app/app/utils/text_style.dart';
 import 'package:education_app/app/widgets/custom_button_widget.dart';
 import 'package:education_app/domain/bloc/quiz_bloc.dart';
+import 'package:education_app/domain/cubit/quiz_cubit.dart';
 import 'package:education_app/domain/state/quiz_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key, required this.courseTitle});
@@ -20,6 +23,7 @@ class _QuizScreenState extends State<QuizScreen> {
   int selectedIndex = 99;
 
   List<int> selectedIndexs = [];
+  List<Map<String, dynamic>> userAnswers = [];
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class _QuizScreenState extends State<QuizScreen> {
       ),
       body: SafeArea(
         child: BlocConsumer<QuizBloc, QuizState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is SuccessGetAllQuiz) {
               final temp = List<int>.filled(state.allQuiz.length, 99);
               selectedIndexs.addAll(temp);
@@ -91,6 +95,26 @@ class _QuizScreenState extends State<QuizScreen> {
                                             ? null
                                             : () {
                                                 selectedIndexs[index] = idx;
+                                                userAnswers.add({
+                                                  "question_id": quiz.quizId,
+                                                  "is_correct": quiz
+                                                          .options![idx]
+                                                          .toLowerCase()
+                                                          .replaceAll(
+                                                              '"', "") ==
+                                                      quiz.correctAnswer!
+                                                          .toLowerCase(),
+                                                  "course_id": quiz.courseId,
+                                                  "queztion": quiz.question,
+                                                  "score": quiz.options![idx]
+                                                              .toLowerCase()
+                                                              .replaceAll(
+                                                                  '"', "") ==
+                                                          quiz.correctAnswer!
+                                                              .toLowerCase()
+                                                      ? 20
+                                                      : 0,
+                                                });
 
                                                 setState(() {});
                                               },
@@ -158,12 +182,32 @@ class _QuizScreenState extends State<QuizScreen> {
                       },
                     )),
                     20.h,
-                    CustomButtonWidget(
-                        onPressed:
-                            selectedIndexs.any((element) => element == 99)
-                                ? null
-                                : () {},
-                        title: "Submit"),
+                    BlocConsumer<QuizCubit, QuizState>(
+                      listener: (context, st) async {
+                        if (st is SuccessSubmitQuizState) {
+                          AppSnakcbar.showSnackbar(context,
+                              message: "Anda berhasil mengumpulkan quiz!");
+                          await Future.delayed(
+                            const Duration(seconds: 1),
+                            () => context.pop(),
+                          );
+                        }
+                      },
+                      builder: (context, st) {
+                        return CustomButtonWidget(
+                            onPressed:
+                                selectedIndexs.any((element) => element == 99)
+                                    ? null
+                                    : () {
+                                        context.read<QuizCubit>().submitQuiz(
+                                            userAnswers,
+                                            state.allQuiz[0].courseId!);
+                                      },
+                            title: st is LoadingSubmitQuizState
+                                ? "Loading..."
+                                : "Submit");
+                      },
+                    ),
                   ],
                 ),
               );
