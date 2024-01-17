@@ -5,7 +5,6 @@ part 'quiz_entity.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class QuizEntity {
-  @JsonKey(name: "id")
   int? quizId;
   String? question;
   List<String>? options;

@@ -7,7 +7,7 @@ part of 'quiz_entity.dart';
 // **************************************************************************
 
 QuizEntity _$QuizEntityFromJson(Map<String, dynamic> json) => QuizEntity(
-      quizId: json['id'] as int?,
+      quizId: json['quiz_id'] as int?,
       question: json['question'] as String?,
       options:
           (json['options'] as List<dynamic>?)?.map((e) => e as String).toList(),
@@ -17,7 +17,7 @@ QuizEntity _$QuizEntityFromJson(Map<String, dynamic> json) => QuizEntity(
 
 Map<String, dynamic> _$QuizEntityToJson(QuizEntity instance) =>
     <String, dynamic>{
-      'id': instance.quizId,
+      'quiz_id': instance.quizId,
       'question': instance.question,
       'options': instance.options,
       'correct_option': instance.correctAnswer,
