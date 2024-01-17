@@ -65,14 +65,22 @@ class AppRouter {
       GoRoute(
         path: AppRouteName.quizScreen,
         builder: (BuildContext context, GoRouterState state) {
-          return const QuizScreen();
+          final data = state.extra as Map<String, dynamic>;
+          return QuizScreen(
+            courseTitle: data["course_title"],
+          );
         },
-        pageBuilder: (context, state) =>
-            RouteTransition.buildPageWithDefaultTransition<void>(
-          context: context,
-          state: state,
-          child: const QuizScreen(),
-        ),
+        pageBuilder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+
+          return RouteTransition.buildPageWithDefaultTransition<void>(
+            context: context,
+            state: state,
+            child: QuizScreen(
+              courseTitle: data["course_title"],
+            ),
+          );
+        },
       ),
     ],
   );

@@ -6,6 +6,8 @@ import 'package:education_app/app/widgets/custom_textfield_widget.dart';
 import 'package:education_app/domain/bloc/auth_bloc.dart';
 import 'package:education_app/domain/bloc/course_bloc.dart';
 import 'package:education_app/domain/bloc/home_bloc.dart';
+import 'package:education_app/domain/bloc/quiz_bloc.dart';
+import 'package:education_app/domain/event/quiz_event.dart';
 import 'package:education_app/domain/state/auth_state.dart';
 import 'package:education_app/domain/state/course_state.dart';
 import 'package:education_app/domain/state/home_state.dart';
@@ -110,8 +112,13 @@ class _QuizCardWidget extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8)),
                   child: InkWell(
-                    onTap: () {
-                      context.push(AppRouteName.quizScreen);
+                    onTap: () async {
+                      context.push(AppRouteName.quizScreen, extra: {
+                        "course_title": state.courses[index].title,
+                      });
+                      context
+                          .read<QuizBloc>()
+                          .add(GetAllQuizEvent(state.courses[index].id!));
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(

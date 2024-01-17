@@ -1,4 +1,5 @@
 import 'package:education_app/app/route/route_name.dart';
+import 'package:education_app/app/utils/app_print.dart';
 import 'package:education_app/app/utils/extension.dart';
 import 'package:education_app/app/utils/text_style.dart';
 import 'package:education_app/domain/bloc/auth_bloc.dart';
@@ -25,7 +26,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void _runTimer() async {
     Future.delayed(const Duration(seconds: 1)).then((_) {
       final state = context.read<AuthBloc>().state;
+
       if (state is CheckUserAlreadyLoggedInState) {
+        AppPrint.debugLog("IS LOGIN ${state.isLogIn}");
         if (state.isLogIn) {
           context.go(AppRouteName.mainScreen);
         } else if (!state.isFirstInstall && !state.isLogIn) {

@@ -8,6 +8,7 @@ import 'package:education_app/domain/bloc/auth_bloc.dart';
 import 'package:education_app/domain/bloc/course_bloc.dart';
 import 'package:education_app/domain/bloc/home_bloc.dart';
 import 'package:education_app/domain/bloc/introduction_bloc.dart';
+import 'package:education_app/domain/bloc/quiz_bloc.dart';
 import 'package:education_app/domain/cubit/choose_programming_cubit.dart';
 import 'package:education_app/domain/cubit/main_cubit.dart';
 import 'package:education_app/domain/event/auth_event.dart';
@@ -55,9 +56,7 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(
               create: (_) => AuthBloc(_authRepositoryImpl)
-                ..add(CheckuserAlreadyLoggedInEvent())
-              // ..add(CheckIsFirstInstallEvent())
-              ),
+                ..add(CheckuserAlreadyLoggedInEvent())),
           BlocProvider(
             create: (_) => IntroductionBloc(inject()),
           ),
@@ -66,6 +65,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (_) => MainCubit(),
+          ),
+          BlocProvider(
+            create: (_) => QuizBloc(inject()),
           ),
           BlocProvider(
             create: (_) => CourseBloc(inject()),
