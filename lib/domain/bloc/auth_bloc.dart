@@ -5,7 +5,6 @@ import 'package:education_app/domain/repositories/auth_repository.dart';
 import 'package:education_app/domain/state/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 
 class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
   AuthBloc(this.authRepository) : super(InitialAuthState()) {
@@ -33,7 +32,7 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
       CheckuserAlreadyLoggedInEvent event, Emitter<AuthState> emit) async {
     emit(LoadingAuthState());
     try {
-      final user = supabase.Supabase.instance.client.auth.currentUser;
+      final user = await authRepository.getCurrentUser();
 
       final isFirstInstall = await authRepository.isFirstInstall();
       emit(
