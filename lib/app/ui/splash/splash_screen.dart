@@ -25,7 +25,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void _runTimer() async {
     Future.delayed(const Duration(seconds: 1)).then((_) {
       final state = context.read<AuthBloc>().state;
-
       if (state is CheckUserAlreadyLoggedInState) {
         if (state.isLogIn) {
           context.go(AppRouteName.mainScreen);
