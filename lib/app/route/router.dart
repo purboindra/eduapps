@@ -4,6 +4,7 @@ import 'package:education_app/app/ui/introduction/introduction_screen.dart';
 import 'package:education_app/app/ui/main/main_screen.dart';
 import 'package:education_app/app/ui/on_board/on_board_screen.dart';
 import 'package:education_app/app/ui/quiz/quiz_screen.dart';
+import 'package:education_app/app/ui/quiz/result_quiz.dart';
 import 'package:education_app/app/ui/sign_in/sign_in_screen.dart';
 import 'package:education_app/app/ui/sign_up/sign_up_screen.dart';
 import 'package:education_app/app/ui/splash/splash_screen.dart';
@@ -80,6 +81,12 @@ class AppRouter {
               courseTitle: data["course_title"],
             ),
           );
+        },
+      ),
+      GoRoute(
+        path: AppRouteName.quizResultScreen,
+        builder: (BuildContext context, GoRouterState state) {
+          return const QuizResultScreen();
         },
       ),
     ],

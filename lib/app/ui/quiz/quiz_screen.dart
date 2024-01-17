@@ -1,3 +1,4 @@
+import 'package:education_app/app/route/route_name.dart';
 import 'package:education_app/app/utils/app_snackbar.dart';
 import 'package:education_app/app/utils/colors.dart';
 import 'package:education_app/app/utils/extension.dart';
@@ -189,7 +190,8 @@ class _QuizScreenState extends State<QuizScreen> {
                               message: "Anda berhasil mengumpulkan quiz!");
                           await Future.delayed(
                             const Duration(seconds: 1),
-                            () => context.pop(),
+                            () => context
+                                .pushReplacement(AppRouteName.quizResultScreen),
                           );
                         }
                       },

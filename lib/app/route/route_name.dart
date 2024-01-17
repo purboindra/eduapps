@@ -6,4 +6,5 @@ class AppRouteName {
   static const mainScreen = '/main';
   static const introScreen = '/introduction';
   static const quizScreen = '/quiz';
+  static const quizResultScreen = '/quiz-result';
 }
