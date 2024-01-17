@@ -1,3 +1,4 @@
+import 'package:education_app/app/route/route_name.dart';
 import 'package:education_app/app/utils/colors.dart';
 import 'package:education_app/app/utils/extension.dart';
 import 'package:education_app/app/utils/text_style.dart';
@@ -10,6 +11,7 @@ import 'package:education_app/domain/state/course_state.dart';
 import 'package:education_app/domain/state/home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -62,55 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: AppTextStyle.titleTextStyle,
             ),
             10.h,
-            BlocBuilder<CourseBloc, CourseState>(
-              builder: (context, state) {
-                if (state is LoadingGetAllCourseState) {
-                  return const SizedBox(
-                    height: 50,
-                    child: CircularProgressIndicator.adaptive(),
-                  );
-                } else if (state is SuccessGetAllCourseState) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.09,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: state.courses.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 5),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 80,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                        state.courses[index].imageUrl!,
-                                      ),
-                                      fit: BoxFit.fitHeight,
-                                    ),
-                                  ),
-                                ),
-                                10.w,
-                                Text(
-                                  state.courses[index].title!,
-                                  style: AppTextStyle.subTitleTextStyle,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                }
-                return const SizedBox();
-              },
-            ),
+            const _QuizCardWidget(),
             29.h,
             const Text(
               "Popular Teachers",
@@ -128,6 +82,70 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _QuizCardWidget extends StatelessWidget {
+  const _QuizCardWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CourseBloc, CourseState>(
+      builder: (context, state) {
+        if (state is LoadingGetAllCourseState) {
+          return const SizedBox(
+            height: 50,
+            child: CircularProgressIndicator.adaptive(),
+          );
+        } else if (state is SuccessGetAllCourseState) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.09,
+            child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: state.courses.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                  child: InkWell(
+                    onTap: () {
+                      context.push(AppRouteName.quizScreen);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 5),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 80,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  state.courses[index].imageUrl!,
+                                ),
+                                fit: BoxFit.fitHeight,
+                              ),
+                            ),
+                          ),
+                          10.w,
+                          Text(
+                            state.courses[index].title!,
+                            style: AppTextStyle.subTitleTextStyle,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        }
+        return const SizedBox();
+      },
     );
   }
 }
