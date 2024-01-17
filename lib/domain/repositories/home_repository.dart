@@ -5,5 +5,5 @@ import 'package:education_app/data/entities/teacher_entity.dart';
 abstract class HomeRepository {
   Future<List<TeacherEntity>> getAllTeachers();
   Future<List<InstitutionEntity>> getAllInstitutions();
-  Future<List<CourseEntity>> getAllCourse(List<int> courseIds);
+  Future<List<CourseEntity>> getAllCourse(List<String> courseIds);
 }
