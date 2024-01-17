@@ -20,4 +20,6 @@ class AppColors {
   static const primaryGreyColor = Colors.grey;
   static const secondaryGreyColor = Color(0xffE7E7E7);
   static const backgroundAvatarColor = Color(0xffE8DBDB);
+  static const correctAnswerColor = Color(0xff99CC29);
+  static const wrongAnswerColor = Color(0xffEB5757);
 }
