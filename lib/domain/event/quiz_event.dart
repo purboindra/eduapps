@@ -15,3 +15,12 @@ final class GetAllQuizEvent extends QuizEvent {
   @override
   List<Object> get props => [courseId];
 }
+
+final class SubmitQuizEvent extends QuizEvent {
+  final List<Map<String, dynamic>> data;
+
+  const SubmitQuizEvent(this.data);
+
+  @override
+  List<Object> get props => [data];
+}

@@ -12,6 +12,10 @@ final class InitialQuizState extends QuizState {}
 
 final class LoadingQuizState extends QuizState {}
 
+final class LoadingSubmitQuizState extends QuizState {}
+
+final class SuccessSubmitQuizState extends QuizState {}
+
 final class SuccessGetAllQuiz extends QuizState {
   final List<QuizEntity> allQuiz;
 
@@ -19,4 +23,13 @@ final class SuccessGetAllQuiz extends QuizState {
 
   @override
   List<Object> get props => [allQuiz];
+}
+
+class SelectedAnswerState extends QuizState {
+  final int index;
+
+  const SelectedAnswerState(this.index);
+
+  @override
+  List<Object> get props => [index];
 }

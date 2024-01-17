@@ -11,6 +11,7 @@ import 'package:education_app/domain/bloc/introduction_bloc.dart';
 import 'package:education_app/domain/bloc/quiz_bloc.dart';
 import 'package:education_app/domain/cubit/choose_programming_cubit.dart';
 import 'package:education_app/domain/cubit/main_cubit.dart';
+import 'package:education_app/domain/cubit/quiz_cubit.dart';
 import 'package:education_app/domain/event/auth_event.dart';
 import 'package:education_app/domain/event/home_event.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +72,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (_) => CourseBloc(inject()),
+          ),
+          BlocProvider(
+            create: (_) => QuizCubit(inject()),
           ),
           BlocProvider(
             create: (_) => HomeBloc(inject())
