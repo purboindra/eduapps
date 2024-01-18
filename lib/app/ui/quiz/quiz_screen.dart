@@ -4,6 +4,7 @@ import 'package:education_app/app/utils/colors.dart';
 import 'package:education_app/app/utils/extension.dart';
 import 'package:education_app/app/utils/text_style.dart';
 import 'package:education_app/app/widgets/custom_button_widget.dart';
+import 'package:education_app/data/entities/quiz_result_entity.dart';
 import 'package:education_app/domain/bloc/quiz_bloc.dart';
 import 'package:education_app/domain/cubit/quiz_cubit.dart';
 import 'package:education_app/domain/state/quiz_state.dart';
@@ -12,7 +13,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key, required this.courseTitle});
+  const QuizScreen({
+    super.key,
+    required this.courseTitle,
+  });
 
   final String courseTitle;
 
@@ -24,7 +28,7 @@ class _QuizScreenState extends State<QuizScreen> {
   int selectedIndex = 99;
 
   List<int> selectedIndexs = [];
-  List<Map<String, dynamic>> userAnswers = [];
+  List<QuizResultEntity> userAnswers = [];
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +44,7 @@ class _QuizScreenState extends State<QuizScreen> {
             if (state is SuccessGetAllQuiz) {
               final temp = List<int>.filled(state.allQuiz.length, 99);
               selectedIndexs.addAll(temp);
+
               setState(() {});
             }
           },
@@ -96,18 +101,17 @@ class _QuizScreenState extends State<QuizScreen> {
                                             ? null
                                             : () {
                                                 selectedIndexs[index] = idx;
-                                                userAnswers.add({
-                                                  "question_id": quiz.quizId,
-                                                  "is_correct": quiz
-                                                          .options![idx]
+                                                final body = QuizResultEntity(
+                                                  courseId: quiz.courseId,
+                                                  isCorrect: quiz.options![idx]
                                                           .toLowerCase()
                                                           .replaceAll(
                                                               '"', "") ==
                                                       quiz.correctAnswer!
                                                           .toLowerCase(),
-                                                  "course_id": quiz.courseId,
-                                                  "queztion": quiz.question,
-                                                  "score": quiz.options![idx]
+                                                  question: quiz.question,
+                                                  questionId: quiz.quizId,
+                                                  score: quiz.options![idx]
                                                               .toLowerCase()
                                                               .replaceAll(
                                                                   '"', "") ==
@@ -115,8 +119,8 @@ class _QuizScreenState extends State<QuizScreen> {
                                                               .toLowerCase()
                                                       ? 20
                                                       : 0,
-                                                });
-
+                                                );
+                                                userAnswers.add(body);
                                                 setState(() {});
                                               },
                                         child: Container(
@@ -190,8 +194,9 @@ class _QuizScreenState extends State<QuizScreen> {
                               message: "Anda berhasil mengumpulkan quiz!");
                           await Future.delayed(
                             const Duration(seconds: 1),
-                            () => context
-                                .pushReplacement(AppRouteName.quizResultScreen),
+                            () => context.pushReplacement(
+                              AppRouteName.quizResultScreen,
+                            ),
                           );
                         }
                       },
