@@ -75,8 +75,13 @@ class _AchievementScreenState extends State<AchievementScreen> {
                               foregroundColor: AppColors.progressColor,
                               corners: StrokeCap.butt,
                               valueNotifier: _valueNotifier,
-                              progress: 2,
-                              maxProgress: 3,
+                              progress: state.resultQuiz.length.toDouble(),
+                              maxProgress:
+                                  authBloc is SuccessGetCurrentUserState
+                                      ? authBloc
+                                          .user.userMetadata!["courses"].length
+                                          .toDouble()
+                                      : 0.toDouble(),
                               foregroundStrokeWidth: 15,
                               backgroundStrokeWidth: 15,
                               child: Center(
