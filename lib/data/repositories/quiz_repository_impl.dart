@@ -92,7 +92,7 @@ class QuizRepositoryImplement implements QuizRepository {
     final quizResultEntity = QuizResultEntity(
       totalCorrectAnswer: getQuiz[0]["correct_answer"],
       questionId: courseId,
-      totalQuestion: getQuiz[0].length,
+      totalQuestion: getQuiz[0]["quiz"].length,
       totalScore: getQuiz[0]["total_score"],
       totalWrongAnswer: getQuiz[0]["wrong_answer"],
     );
