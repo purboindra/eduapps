@@ -1,3 +1,4 @@
+import 'package:education_app/data/entities/course_entity.dart';
 import 'package:education_app/data/entities/quiz_entity.dart';
 import 'package:education_app/data/entities/quiz_result_entity.dart';
 import 'package:equatable/equatable.dart';
@@ -30,11 +31,12 @@ final class SuccessGetAllQuiz extends QuizState {
 
 final class SuccessGetAllQuizResultState extends QuizState {
   final QuizResultEntity getResultQuiz;
+  final CourseEntity detailCourse;
 
-  const SuccessGetAllQuizResultState(this.getResultQuiz);
+  const SuccessGetAllQuizResultState(this.getResultQuiz, this.detailCourse);
 
   @override
-  List<Object> get props => [getResultQuiz];
+  List<Object> get props => [getResultQuiz, detailCourse];
 }
 
 class SelectedAnswerState extends QuizState {
