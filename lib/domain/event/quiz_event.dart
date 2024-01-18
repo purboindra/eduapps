@@ -24,3 +24,12 @@ final class SubmitQuizEvent extends QuizEvent {
   @override
   List<Object> get props => [data];
 }
+
+final class GetAllQuizResultEvent extends QuizEvent {
+  final int courseId;
+
+  const GetAllQuizResultEvent(this.courseId);
+
+  @override
+  List<Object> get props => [courseId];
+}

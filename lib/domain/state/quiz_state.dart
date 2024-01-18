@@ -1,4 +1,5 @@
 import 'package:education_app/data/entities/quiz_entity.dart';
+import 'package:education_app/data/entities/quiz_result_entity.dart';
 import 'package:equatable/equatable.dart';
 
 sealed class QuizState extends Equatable {
@@ -14,6 +15,8 @@ final class LoadingQuizState extends QuizState {}
 
 final class LoadingSubmitQuizState extends QuizState {}
 
+final class LoadingGetAllQuizResultState extends QuizState {}
+
 final class SuccessSubmitQuizState extends QuizState {}
 
 final class SuccessGetAllQuiz extends QuizState {
@@ -23,6 +26,15 @@ final class SuccessGetAllQuiz extends QuizState {
 
   @override
   List<Object> get props => [allQuiz];
+}
+
+final class SuccessGetAllQuizResultState extends QuizState {
+  final QuizResultEntity getResultQuiz;
+
+  const SuccessGetAllQuizResultState(this.getResultQuiz);
+
+  @override
+  List<Object> get props => [getResultQuiz];
 }
 
 class SelectedAnswerState extends QuizState {
