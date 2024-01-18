@@ -2,6 +2,7 @@ import 'package:education_app/app/route/router.dart';
 import 'package:education_app/app/utils/colors.dart';
 import 'package:education_app/app_bloc.dart';
 import 'package:education_app/data/repositories/auth_repository_impl.dart';
+import 'package:education_app/data/repositories/course_repository_impl.dart';
 import 'package:education_app/dependencies_injection.dart/dependency_injection.dart';
 import 'package:education_app/dependencies_injection.dart/inject.dart';
 import 'package:education_app/domain/bloc/auth_bloc.dart';
@@ -68,7 +69,7 @@ class MyApp extends StatelessWidget {
             create: (_) => MainCubit(),
           ),
           BlocProvider(
-            create: (_) => QuizBloc(inject()),
+            create: (_) => QuizBloc(inject(), CourseRepositoryImpl()),
           ),
           BlocProvider(
             create: (_) => CourseBloc(inject()),
