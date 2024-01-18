@@ -25,6 +25,8 @@ class QuizRepositoryImplement implements QuizRepository {
 
     final correctAnswer = body.where((element) => element.score != 0).toList();
 
+    final wrongAnswer = body.where((element) => element.score == 0).toList();
+
     for (final score in correctAnswer) {
       totalScore += score.score!;
     }
@@ -54,6 +56,8 @@ class QuizRepositoryImplement implements QuizRepository {
         "course_id": courseId,
         "total_score": totalScore,
         "correct_answer": correctAnswer.length,
+        "wrong_answer": wrongAnswer.length,
+        "total_question": body.length,
       }
     ];
 
@@ -66,5 +70,33 @@ class QuizRepositoryImplement implements QuizRepository {
         },
       ],
     }).eq("uid", user.id);
+  }
+
+  @override
+  Future<QuizResultEntity> getQuizResult(int courseId) async {
+    final user = Supabase.instance.client.auth.currentUser;
+
+    final fetchQuiz = await Supabase.instance.client
+        .from("user")
+        .select("quiz")
+        .eq("uid", user!.id)
+        .select("quiz");
+
+    final getAllQuiz =
+        List<Map<String, dynamic>>.from(fetchQuiz[0]["quiz"][0]["data"]);
+
+    final getQuiz = getAllQuiz
+        .where((element) => element["course_id"] == courseId)
+        .toList();
+
+    final quizResultEntity = QuizResultEntity(
+      totalCorrectAnswer: getQuiz[0]["correct_answer"],
+      questionId: courseId,
+      totalQuestion: getQuiz[0].length,
+      totalScore: getQuiz[0]["total_score"],
+      totalWrongAnswer: getQuiz[0]["wrong_answer"],
+    );
+
+    return quizResultEntity;
   }
 }
