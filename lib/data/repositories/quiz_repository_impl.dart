@@ -29,53 +29,40 @@ class QuizRepositoryImplement implements QuizRepository {
       totalScore += score.score!;
     }
 
-    List<Map<String, dynamic>> currentQuiz = [];
-
     final getQuiz = await Supabase.instance.client
         .from("user")
         .select("quiz")
         .eq("uid", user!.id)
         .select("quiz");
 
-    final List<dynamic>? quizData = getQuiz[0]["quiz"] ?? [];
-
-    if (quizData!.isNotEmpty) {
-      final Map<String, dynamic>? convertQuizToMap = quizData[0];
-      final List<dynamic>? quizList = convertQuizToMap?["quiz"] ?? [];
-      currentQuiz = List<Map<String, dynamic>>.from(quizList ?? []);
-    }
+    List<dynamic>? quizData = [];
 
     // CONDITION IF USER FIRST TIME SUBMIT QUIZ
     if (getQuiz[0]["quiz"] != null) {
-      currentQuiz =
-          List<Map<String, dynamic>>.from(getQuiz[0]["quiz"][0]["quiz"] ?? []);
+      quizData = getQuiz[0]["quiz"][0]["data"];
     }
 
-    final checkExistingQuiz = currentQuiz.indexWhere((element) =>
-        element.isNotEmpty &&
-        element["course_id"] != null &&
-        element["course_id"] == courseId);
+    final currentQuiz = List<Map<String, dynamic>>.from(quizData ?? []);
 
-    if (checkExistingQuiz == -1) {
-      // NOT FOUND
-      currentQuiz.add({
+    if (currentQuiz.isNotEmpty) {
+      currentQuiz.removeWhere((element) => element["course_id"] == courseId);
+    }
+
+    final dataSubmit = [
+      {
         "quiz": body,
         "course_id": courseId,
-      });
-    } else {
-      currentQuiz[checkExistingQuiz] = {
-        "course_id": courseId,
-        "quiz": body.map((e) => e.toJson()).toList(),
-      };
-    }
+        "total_score": totalScore,
+        "correct_answer": correctAnswer.length,
+      }
+    ];
+
+    final mergeQuiz = [...currentQuiz, ...dataSubmit];
 
     await Supabase.instance.client.from("user").update({
       "quiz": [
         {
-          "course_id": courseId,
-          "total_score": totalScore,
-          "correct_answer": correctAnswer.length,
-          "quiz": currentQuiz,
+          "data": mergeQuiz,
         },
       ],
     }).eq("uid", user.id);
