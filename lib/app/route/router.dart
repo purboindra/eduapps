@@ -71,7 +71,6 @@ class AppRouter {
           final data = state.extra as Map<String, dynamic>;
           return QuizScreen(
             courseTitle: data["course_title"],
-            courseId: data["course_id"],
           );
         },
         pageBuilder: (context, state) {
@@ -82,7 +81,6 @@ class AppRouter {
             state: state,
             child: QuizScreen(
               courseTitle: data["course_title"],
-              courseId: data["course_id"],
             ),
           );
         },
