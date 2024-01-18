@@ -18,7 +18,7 @@ class AchievementScreen extends StatefulWidget {
 }
 
 class _AchievementScreenState extends State<AchievementScreen> {
-  final ValueNotifier<double> _valueNotifier = ValueNotifier(10);
+  final ValueNotifier<double> _valueNotifier = ValueNotifier(0);
 
   @override
   void initState() {
@@ -32,6 +32,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authBloc = context.watch<AuthBloc>().state;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -57,29 +58,41 @@ class _AchievementScreenState extends State<AchievementScreen> {
                 child: Center(
                   child: Row(
                     children: [
-                      DashedCircularProgressBar(
-                        width: 100,
-                        height: 100,
-                        backgroundColor: AppColors.primaryGreyColor,
-                        foregroundColor: AppColors.progressColor,
-                        corners: StrokeCap.butt,
-                        valueNotifier: _valueNotifier,
-                        progress: 2,
-                        maxProgress: 3,
-                        foregroundStrokeWidth: 15,
-                        backgroundStrokeWidth: 15,
-                        child: Center(
-                          child: ValueListenableBuilder(
-                            valueListenable: _valueNotifier,
-                            builder: (_, double value, __) => Text(
-                              '${(2 / 3 * 100).toInt()}%',
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 24),
-                            ),
-                          ),
-                        ),
+                      BlocBuilder<AchivementBloc, AchivementState>(
+                        builder: (context, state) {
+                          if (state is LoadingGetAllAchivementQuizState) {
+                            return const Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            );
+                          } else if (state
+                              is SuccessGetAllAchivementQuizState) {
+                            return DashedCircularProgressBar(
+                              width: 100,
+                              height: 100,
+                              backgroundColor: AppColors.primaryGreyColor,
+                              foregroundColor: AppColors.progressColor,
+                              corners: StrokeCap.butt,
+                              valueNotifier: _valueNotifier,
+                              progress: 2,
+                              maxProgress: 3,
+                              foregroundStrokeWidth: 15,
+                              backgroundStrokeWidth: 15,
+                              child: Center(
+                                child: ValueListenableBuilder(
+                                  valueListenable: _valueNotifier,
+                                  builder: (_, double value, __) => Text(
+                                    '${(state.resultQuiz.length / (authBloc is SuccessGetCurrentUserState ? authBloc.user.userMetadata!["courses"].length : 0) * 100).toInt()}%',
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300,
+                                        fontSize: 24),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          return const SizedBox();
+                        },
                       ),
                       10.w,
                       const Expanded(
