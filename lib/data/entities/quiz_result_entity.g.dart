@@ -16,7 +16,9 @@ QuizResultEntity _$QuizResultEntityFromJson(Map<String, dynamic> json) =>
       totalQuestion: json['total_question'] as int?,
       totalScore: json['total_score'] as int?,
       totalCorrectAnswer: json['total_correct_answer'] as int?,
+      courseTitle: json['course_title'] as String?,
       totalWrongAnswer: json['total_wrong_answer'] as int?,
+      courseImage: json['course_image'] as String?,
     );
 
 Map<String, dynamic> _$QuizResultEntityToJson(QuizResultEntity instance) =>
@@ -25,9 +27,11 @@ Map<String, dynamic> _$QuizResultEntityToJson(QuizResultEntity instance) =>
       'question': instance.question,
       'course_id': instance.courseId,
       'is_correct': instance.isCorrect,
+      'course_title': instance.courseTitle,
       'question_id': instance.questionId,
       'total_question': instance.totalQuestion,
       'total_score': instance.totalScore,
       'total_correct_answer': instance.totalCorrectAnswer,
       'total_wrong_answer': instance.totalWrongAnswer,
+      'course_image': instance.courseImage,
     };

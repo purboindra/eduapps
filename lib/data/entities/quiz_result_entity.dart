@@ -8,11 +8,13 @@ class QuizResultEntity {
   String? question;
   int? courseId;
   bool? isCorrect;
+  String? courseTitle;
   int? questionId;
   int? totalQuestion;
   int? totalScore;
   int? totalCorrectAnswer;
   int? totalWrongAnswer;
+  String? courseImage;
 
   QuizResultEntity({
     this.score,
@@ -23,7 +25,9 @@ class QuizResultEntity {
     this.totalQuestion,
     this.totalScore,
     this.totalCorrectAnswer,
+    this.courseTitle,
     this.totalWrongAnswer,
+    this.courseImage,
   });
 
   factory QuizResultEntity.fromJson(Map<String, dynamic> json) =>
