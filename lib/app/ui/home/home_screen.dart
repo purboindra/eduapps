@@ -115,6 +115,7 @@ class _QuizCardWidget extends StatelessWidget {
                     onTap: () async {
                       context.push(AppRouteName.quizScreen, extra: {
                         "course_title": state.courses[index].title,
+                        "course_id": state.courses[index].id,
                       });
                       context
                           .read<QuizBloc>()

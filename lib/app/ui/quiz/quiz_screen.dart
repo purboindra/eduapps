@@ -16,9 +16,11 @@ class QuizScreen extends StatefulWidget {
   const QuizScreen({
     super.key,
     required this.courseTitle,
+    required this.courseId,
   });
 
   final String courseTitle;
+  final int courseId;
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -195,8 +197,8 @@ class _QuizScreenState extends State<QuizScreen> {
                           await Future.delayed(
                             const Duration(seconds: 1),
                             () => context.pushReplacement(
-                              AppRouteName.quizResultScreen,
-                            ),
+                                AppRouteName.quizResultScreen,
+                                extra: {"course_id": widget.courseId}),
                           );
                         }
                       },
