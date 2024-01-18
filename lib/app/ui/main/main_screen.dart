@@ -1,3 +1,4 @@
+import 'package:education_app/app/ui/achivement/achivement_screen.dart';
 import 'package:education_app/app/ui/home/home_screen.dart';
 import 'package:education_app/app/ui/profile/profile_screen.dart';
 import 'package:education_app/app/utils/colors.dart';
@@ -30,7 +31,7 @@ final List<BottomNavigationBarItem> _bottomNavbarItems = [
         Icons.star_outline,
         size: 32,
       ),
-      label: "Achievement"),
+      label: "Achivement"),
   const BottomNavigationBarItem(
       icon: Icon(
         CupertinoIcons.person,
@@ -44,9 +45,7 @@ final List<Widget> _body = [
   const Center(
     child: Text("Learn"),
   ),
-  const Center(
-    child: Text("Achievement"),
-  ),
+  AchievementScreen(),
   const ProfileScreen(),
 ];
 
