@@ -22,4 +22,5 @@ class AppColors {
   static const backgroundAvatarColor = Color(0xffE8DBDB);
   static const correctAnswerColor = Color(0xff99CC29);
   static const wrongAnswerColor = Color(0xffEB5757);
+  static const progressColor = Color(0xff69B85E);
 }
