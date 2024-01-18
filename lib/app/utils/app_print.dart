@@ -11,7 +11,7 @@ class AppPrint {
     logger.i(message);
   }
 
-  static erroLog(String message) {
-    logger.e("Error log", error: message);
+  static erroLog(String message, {StackTrace? st}) {
+    logger.e("Error log", error: message, stackTrace: st);
   }
 }
