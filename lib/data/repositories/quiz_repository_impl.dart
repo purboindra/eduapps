@@ -1,9 +1,14 @@
 import 'package:education_app/data/entities/quiz_entity.dart';
 import 'package:education_app/data/entities/quiz_result_entity.dart';
+import 'package:education_app/domain/repositories/achivement_repository.dart';
 import 'package:education_app/domain/repositories/quiz_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class QuizRepositoryImplement implements QuizRepository {
+  const QuizRepositoryImplement(this.achivementRepository);
+
+  final AchivementRepository achivementRepository;
+
   @override
   Future<List<QuizEntity>> getAllQuiz(int courseId) async {
     List<QuizEntity> tempQuiz = [];
@@ -19,6 +24,8 @@ class QuizRepositoryImplement implements QuizRepository {
 
   @override
   Future<void> submitQuiz(List<QuizResultEntity> body, int courseId) async {
+    final courseDetail = await achivementRepository.getCourseDetail(courseId);
+
     final user = Supabase.instance.client.auth.currentUser;
 
     int totalScore = 0;
@@ -54,6 +61,8 @@ class QuizRepositoryImplement implements QuizRepository {
       {
         "quiz": body,
         "course_id": courseId,
+        "course_title": courseDetail.title,
+        "course_image": courseDetail.imageUrl!,
         "total_score": totalScore,
         "correct_answer": correctAnswer.length,
         "wrong_answer": wrongAnswer.length,
