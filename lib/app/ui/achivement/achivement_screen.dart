@@ -1,4 +1,5 @@
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
+import 'package:education_app/app/route/route_name.dart';
 import 'package:education_app/app/utils/colors.dart';
 import 'package:education_app/app/utils/extension.dart';
 import 'package:education_app/app/utils/text_style.dart';
@@ -9,6 +10,7 @@ import 'package:education_app/domain/state/achivement_state.dart';
 import 'package:education_app/domain/state/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class AchievementScreen extends StatefulWidget {
   const AchievementScreen({super.key});
@@ -138,55 +140,62 @@ class _AchievementScreenState extends State<AchievementScreen> {
                           itemBuilder: (context, index) {
                             final course = state.resultQuiz[index];
                             return Card(
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(vertical: 5),
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 10,
-                                  horizontal: 17,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 65,
-                                      height: 65,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image:
-                                              NetworkImage(course.courseImage!),
+                              child: InkWell(
+                                onTap: () async => await context.push(
+                                    AppRouteName.quizResultScreen,
+                                    extra: {"course_id": course.courseId}),
+                                child: Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal: 17,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 65,
+                                        height: 65,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                                course.courseImage!),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    5.w,
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            course.courseTitle!,
-                                            style: AppTextStyle
-                                                .subTitleTextStyle
-                                                .copyWith(
-                                              color:
-                                                  AppColors.primaryBlackColor,
+                                      5.w,
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              course.courseTitle!,
+                                              style: AppTextStyle
+                                                  .subTitleTextStyle
+                                                  .copyWith(
+                                                color:
+                                                    AppColors.primaryBlackColor,
+                                              ),
                                             ),
-                                          ),
-                                          3.h,
-                                          Text(
-                                            "You have completed this quiz with score: ${course.totalScore}",
-                                            style: AppTextStyle.commonTextStyle
-                                                .copyWith(
-                                              color:
-                                                  AppColors.primaryBlackColor,
+                                            3.h,
+                                            Text(
+                                              "You have completed this quiz with score: ${course.totalScore}",
+                                              style: AppTextStyle
+                                                  .commonTextStyle
+                                                  .copyWith(
+                                                color:
+                                                    AppColors.primaryBlackColor,
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
