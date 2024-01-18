@@ -1,8 +1,10 @@
+import 'package:education_app/data/repositories/achivement_repository_impl.dart';
 import 'package:education_app/data/repositories/auth_repository_impl.dart';
 import 'package:education_app/data/repositories/course_repository_impl.dart';
 import 'package:education_app/data/repositories/home_repository_impl.dart';
 import 'package:education_app/data/repositories/introduction_repository_impl.dart';
 import 'package:education_app/data/repositories/quiz_repository_impl.dart';
+import 'package:education_app/domain/repositories/achivement_repository.dart';
 import 'package:education_app/domain/repositories/auth_repository.dart';
 import 'package:education_app/domain/repositories/course_repository.dart';
 import 'package:education_app/domain/repositories/home_repository.dart';
@@ -18,7 +20,9 @@ class DependencyInject {
     getIt.registerSingleton<IntroductionRepository>(
         IntroductionRepositoryImpl());
     getIt.registerSingleton<HomeRepository>(HomeRepositoryImpl());
-    getIt.registerSingleton<QuizRepository>(QuizRepositoryImplement());
+    getIt.registerSingleton<QuizRepository>(
+        QuizRepositoryImplement(AchivementRepositoryImpl()));
     getIt.registerSingleton<CourseRepository>(CourseRepositoryImpl());
+    getIt.registerSingleton<AchivementRepository>(AchivementRepositoryImpl());
   }
 }
