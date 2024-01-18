@@ -68,6 +68,9 @@ class _AchievementScreenState extends State<AchievementScreen> {
                             );
                           } else if (state
                               is SuccessGetAllAchivementQuizState) {
+                            if (state.resultQuiz.isEmpty) {
+                              return const SizedBox();
+                            }
                             return DashedCircularProgressBar(
                               width: 100,
                               height: 100,
@@ -136,6 +139,14 @@ class _AchievementScreenState extends State<AchievementScreen> {
                       ),
                     );
                   } else if (state is SuccessGetAllAchivementQuizState) {
+                    if (state.resultQuiz.isEmpty) {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height / 2,
+                        child: const Center(
+                          child: Text("You have not complete any quiz yet..."),
+                        ),
+                      );
+                    }
                     return Column(
                       children: [
                         ListView.builder(
@@ -167,7 +178,7 @@ class _AchievementScreenState extends State<AchievementScreen> {
                                         decoration: BoxDecoration(
                                           image: DecorationImage(
                                             image: NetworkImage(
-                                                course.courseImage!),
+                                                course.courseImage ?? ""),
                                           ),
                                         ),
                                       ),

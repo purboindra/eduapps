@@ -7,6 +7,7 @@ class AchivementRepositoryImpl implements AchivementRepository {
   @override
   Future<List<QuizResultEntity>> getAllCourseQuiz() async {
     List<QuizResultEntity> tempList = [];
+    List<Map<String, dynamic>> getAllQuiz = [];
 
     final user = Supabase.instance.client.auth.currentUser;
 
@@ -16,8 +17,10 @@ class AchivementRepositoryImpl implements AchivementRepository {
         .eq("uid", user!.id)
         .select("quiz");
 
-    final getAllQuiz =
-        List<Map<String, dynamic>>.from(fetchQuiz[0]["quiz"][0]["data"]);
+    if (fetchQuiz[0]["quiz"] != null) {
+      getAllQuiz =
+          List<Map<String, dynamic>>.from(fetchQuiz[0]["quiz"][0]["data"]);
+    }
 
     for (final quiz in getAllQuiz) {
       tempList.add(QuizResultEntity.fromJson(quiz));
